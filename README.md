@@ -1,10 +1,10 @@
-# 💪 Fitness App
+# Fitness App
 
 A full-stack **React Native** fitness application with user authentication, profile management and workout library.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 FITNESS_APP/
@@ -15,7 +15,7 @@ FITNESS_APP/
 ---
 
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
@@ -73,9 +73,8 @@ API_NINJAS_KEY=your_api_ninjas_key
 BASE_URL=http://10.0.2.2:5000
 ```
 
-> **Note:** `10.0.2.2` is the Android emulator's alias for `localhost` on the host machine. For a physical device, use your machine's local IP (e.g., `192.168.x.x`).
+Start Metro bundler: 
 
-Start Metro bundler:
 
 ```bash
 npm start
@@ -86,3 +85,20 @@ In a separate terminal, run the app on Android:
 ```bash
 npx react-native run-android
 ```
+
+
+# Instructions to run the app
+
+1. Open Three terminals
+2. In the first terminal, run `cd server` and `npm run dev`.
+3. In the second terminal, run `cd Frontend` and `npm start`.
+4. In a third terminal, run `cd frontend` and `npx react-native run-android`.
+
+
+# Instructions to configure API Key
+
+1. Go to https://api-ninjas.com/
+2. Sign up and go to My Account -> API Key
+3. Get Your API Key
+4. Create a .env file in the frontend directory
+5. Add the following line: API_NINJAS_KEY=your_api_ninjas_key
