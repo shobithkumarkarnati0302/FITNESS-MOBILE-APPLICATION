@@ -87,15 +87,7 @@ npx react-native run-android
 ```
 
 
-# Instructions to run the app
-
-1. Open Three terminals
-2. In the first terminal, run `cd server` and `npm run dev`.
-3. In the second terminal, run `cd Frontend` and `npm start`.
-4. In a third terminal, run `cd frontend` and `npx react-native run-android`.
-
-
-# Instructions to configure API Key
+### Instructions to configure API Key
 
 1. Go to https://api-ninjas.com/
 2. Sign up and go to My Account -> API Key
