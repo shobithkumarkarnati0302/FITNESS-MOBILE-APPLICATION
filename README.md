@@ -29,7 +29,7 @@ FITNESS_APP/
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/shobithkumarkarnati0302/FITNESS-MOBILE-APPLICATION.git
 cd FITNESS_APP
 ```
 
@@ -47,7 +47,7 @@ Create a `.env` file in the `server/` directory and add the following:
 ```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/fitnessapp or MongoDB Atlas URL
-JWT_SECRET=your_jwt_secret_here or any random string
+JWT_SECRET=your_jwt_secret_here or any Lengthy random string
 ```
 
 Start the development server:
@@ -81,7 +81,7 @@ npm start
 ```
 
 
-> Note: Make Sure Android Emulator is running before running the following command to start the app on Android emulator:
+> Note: Make Sure Android Emulator is running before running the following command to start the app on Android emulator: 
 
 
 In a separate terminal, run the following command to start the app on Android emulator:
