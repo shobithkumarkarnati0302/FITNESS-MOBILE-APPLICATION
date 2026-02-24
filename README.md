@@ -73,14 +73,18 @@ API_NINJAS_KEY=your_api_ninjas_key
 BASE_URL=http://10.0.2.2:5000
 ```
 
-Start Metro bundler: 
+In One Terminal run the following command to start Metro bundler: 
 
 
 ```bash
 npm start
 ```
 
-In a separate terminal, run the app on Android:
+
+> Note: Make Sure Android Emulator is running before running the following command to start the app on Android emulator:
+
+
+In a separate terminal, run the following command to start the app on Android emulator:
 
 ```bash
 npx react-native run-android
