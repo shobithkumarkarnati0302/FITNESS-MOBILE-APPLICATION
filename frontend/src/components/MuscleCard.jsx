@@ -1,32 +1,35 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 import { ChevronRight } from 'lucide-react-native';
+import { rf, hs, vs, wp, isTablet } from '../utils/responsive';
 
-const MuscleCard = ({ item, navigation }) => {
+const MuscleCard = ({ item, navigation, numCols = 2 }) => {
+
+  const totalHPad = wp(isTablet ? 4 : 3) * 2;
+  const gap       = hs(6) * (numCols - 1);
+  const cardWidth = (wp(100) - totalHPad - gap) / numCols;
+
   return (
-    <View className="flex-1 m-1.5">
-      <TouchableOpacity className="rounded-[20px] overflow-hidden" style={{ aspectRatio: 4 / 5 }} activeOpacity={0.85}
+    <View style={{ width: cardWidth,marginBottom: vs(10),marginHorizontal: hs(3),}}>
+      <TouchableOpacity style={{ borderRadius: hs(20), overflow: 'hidden', aspectRatio: 4 / 5 }} activeOpacity={0.85}
         onPress={() => navigation.navigate('WorkoutList', { muscleGroup: item.name })}
       >
         {/* Background Image */}
-        <Image source={item.image} className="absolute w-full h-full" resizeMode="cover"/>
+        <Image source={item.image} style={{ position: 'absolute', width: '100%', height: '100%' }} resizeMode="cover"/>
 
         {/* Dark overlay */}
-        <View className="absolute inset-0 bg-black/35" />
-
-        {/* Bottom gradient fade */}
-        <View className="absolute bottom-0 left-0 right-0 h-full bg-black/10" />
+        <View style={{ position: 'absolute', top: 0,left: 0,right: 0,bottom: 0,backgroundColor: 'rgba(0,0,0,0.35)',}}/>
 
         {/* Content */}
-        <View className="flex-1 justify-end p-3">
-          <View className="">
-            <Text className="text-white text-xs font-extrabold uppercase tracking-wider mb-1">
-              {item.name.replace(/_/g, ' ')}
+        <View style={{ flex: 1, justifyContent: 'flex-end', padding: hs(10) }}>
+          <Text style={{ color: '#ffffff',fontSize: rf(11),fontWeight: '800',textTransform: 'uppercase',letterSpacing: 1,marginBottom: vs(4),}}>
+            {item.name.replace(/_/g, ' ')}
+          </Text>
+          <View style = {{flexDirection: 'row',alignItems: 'center',alignSelf: 'flex-start',backgroundColor: '#6366f1',borderRadius: hs(20),paddingHorizontal: hs(8),paddingVertical: vs(3),}}>
+          <Text style = {{ color: '#ffffff', fontSize: rf(10), fontWeight: '700' }}>
+              Explore
             </Text>
-          </View>
-          <View className="flex-row items-center self-start bg-indigo-500 rounded-full px-2 py-1">
-            <Text className="text-white text-[10px] font-bold">Explore</Text>
-            <ChevronRight size={11} color="#fff" />
+            <ChevronRight size={hs(11)} color="#fff" />
           </View>
         </View>
       </TouchableOpacity>

@@ -1,21 +1,12 @@
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
-  StatusBar,
-} from 'react-native';
+import { View, Text,FlatList,TouchableOpacity,StatusBar,} from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaView,useSafeAreaInsets,} from 'react-native-safe-area-context';
 import getExercisesByMuscle from '../services/exercisesService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import WorkoutCard from '../components/WorkoutCard';
 import ErrorMessage from '../components/ErrorMessage';
-import { ChevronLeft, Dumbbell, Search, X } from 'lucide-react-native';
+import { ChevronLeft, Dumbbell } from 'lucide-react-native';
+import { rf, hs, vs, wp } from '../utils/responsive';
 
 const WorkoutListScreen = ({ route, navigation }) => {
   const muscleGroup = route?.params?.muscleGroup || 'abdominals';
@@ -23,7 +14,6 @@ const WorkoutListScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
-  const [query, setQuery] = useState('');
   const insets = useSafeAreaInsets();
 
   const fetchExercises = useCallback(
@@ -48,10 +38,6 @@ const WorkoutListScreen = ({ route, navigation }) => {
     fetchExercises();
   }, [fetchExercises]);
 
-  const filtered = exercises.filter(e =>
-    e.name.toLowerCase().includes(query.toLowerCase()),
-  );
-
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage error={error} navigation={navigation} />;
 
@@ -59,73 +45,50 @@ const WorkoutListScreen = ({ route, navigation }) => {
     <SafeAreaView className="flex-1 bg-gray-50">
       <StatusBar barStyle="light-content" backgroundColor="#6366f1" />
       <FlatList
-        data={filtered}
+        data={exercises}
         keyExtractor={(item, index) => `${item.name}-${index}`}
         contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingBottom: insets.bottom + 100,
+          paddingHorizontal: wp(4),
+          paddingBottom: insets.bottom + vs(100),
         }}
         showsVerticalScrollIndicator={false}
         refreshing={refreshing}
         onRefresh={() => fetchExercises(true)}
         ListHeaderComponent={
           <>
-            {/* Hero Strip */}
-            <View className="bg-indigo-500 -mx-4 px-6 pt-4 pb-6 mb-4">
-              {/* Back */}
+            {/* Header */}
+            <View style={{ backgroundColor: '#6366f1',marginHorizontal: -wp(4),paddingHorizontal: hs(24),paddingTop: vs(14),paddingBottom: vs(20),marginBottom: vs(14),}}>
+              {/* Back Button */}
               <TouchableOpacity onPress={() => navigation.goBack()}
-                className="flex-row items-center self-start bg-white/20 rounded-xl px-3 py-1.5 mb-4"
+                style={{ flexDirection: 'row', alignItems: 'center',alignSelf: 'flex-start',backgroundColor: 'rgba(255,255,255,0.2)',borderRadius: hs(12),paddingHorizontal: hs(12),paddingVertical: vs(6),marginBottom: vs(14),}}
               >
-                <ChevronLeft size={18} color="#fff" />
-                <Text className="text-white font-bold text-sm ml-0.5">
+                <ChevronLeft size={hs(18)} color="#fff" />
+                <Text style={{color: '#ffffff',fontWeight: '700',fontSize: rf(13),marginLeft: hs(2),}}>
                   Back
                 </Text>
               </TouchableOpacity>
 
               {/* Title */}
-              <View className="flex-row items-center mb-5">
-                <View className="w-10 h-10 rounded-xl bg-white/20 items-center justify-center mr-3">
-                  <Dumbbell size={20} color="#fff" />
+              <View style={{flexDirection: 'row',alignItems: 'center',marginBottom: vs(16),}}>
+                <View style={{width: hs(40),height: hs(40),borderRadius: hs(12),backgroundColor: 'rgba(255,255,255,0.2)',alignItems: 'center',justifyContent: 'center',marginRight: hs(12),}}>
+                  <Dumbbell size={hs(20)} color="#fff" />
                 </View>
                 <View>
-                  <Text className="text-white text-2xl font-extrabold">
+                  <Text style={{color: '#ffffff',fontSize: rf(22),fontWeight: '800',}}>
                     Exercises
                   </Text>
-                  <Text className="text-white/65 text-xs font-bold uppercase tracking-widest">
+                  <Text style={{color: 'rgba(255,255,255,0.65)',fontSize: rf(11),fontWeight: '700',textTransform: 'uppercase',letterSpacing: 1.5,}}>
                     {muscleGroup.replace(/_/g, ' ')} · {exercises.length} found
                   </Text>
                 </View>
               </View>
-
-              {/* Search Bar */}
-              <View className="flex-row items-center bg-white/15 rounded-2xl px-4 py-2.5">
-                <Search size={16} color="rgba(255,255,255,0.7)" />
-                <TextInput className="flex-1 text-white ml-2.5 text-sm"
-                  placeholder="Search exercises..."
-                  placeholderTextColor="rgba(255,255,255,0.5)"
-                  value={query} onChangeText={setQuery} autoCapitalize="none"
-                />
-                {query.length > 0 && (
-                  <TouchableOpacity onPress={() => setQuery('')}>
-                    <X size={16} color="rgba(255,255,255,0.7)" />
-                  </TouchableOpacity>
-                )}
-              </View>
             </View>
-
-            {/* Result count if filtering */}
-            {query.length > 0 && (
-              <Text className="text-gray-500 text-xs font-semibold mb-2 ml-1">
-                {filtered.length} result{filtered.length !== 1 ? 's' : ''} for "
-                {query}"
-              </Text>
-            )}
           </>
         }
         ListEmptyComponent={
-          <View className="flex-1 justify-center items-center py-20">
-            <Text className="text-gray-400 text-base font-medium">
-              {query ? `No results for "${query}"` : 'No exercises found.'}
+          <View style={{flex: 1,justifyContent: 'center',alignItems: 'center',paddingVertical: vs(80),}}>
+            <Text style={{ color: '#9ca3af', fontSize: rf(15), fontWeight: '500' }}>
+              No exercises found.
             </Text>
           </View>
         }

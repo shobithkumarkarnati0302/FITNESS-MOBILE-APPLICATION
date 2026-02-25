@@ -1,47 +1,65 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { ChevronRight } from 'lucide-react-native';
+import { rf, hs, vs } from '../utils/responsive';
+
+const diffClass = {
+  beginner: {
+    borderColor: '#22c55e',
+    badgeBg: '#dcfce7',
+    badgeBorder: '#bbf7d0',
+    textColor: '#15803d',
+  },
+  intermediate: {
+    borderColor: '#f59e0b',
+    badgeBg: '#fef9c3',
+    badgeBorder: '#fde68a',
+    textColor: '#b45309',
+  },
+  expert: {
+    borderColor: '#ef4444',
+    badgeBg: '#fee2e2',
+    badgeBorder: '#fecaca',
+    textColor: '#b91c1c',
+  },
+};
 
 const WorkoutCard = ({ item, navigation }) => {
-  const diffClass = {
-    beginner: {
-      border: 'border-l-green-500',
-      badge: 'bg-green-100 border-green-200',
-      text: 'text-green-700',
-    },
-    intermediate: {
-      border: 'border-l-amber-500',
-      badge: 'bg-amber-100 border-amber-200',
-      text: 'text-amber-700',
-    },
-    expert: {
-      border: 'border-l-red-500',
-      badge: 'bg-red-100 border-red-200',
-      text: 'text-red-700',
-    },
-  };
-  
   const diff = diffClass[item.difficulty] || diffClass.beginner;
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('WorkoutDetail', { exercise: item })}
       activeOpacity={0.85}
-      className={`bg-white rounded-[20px] mb-3.5 mt-5 p-4 border border-gray-200 shadow-lg shadow-gray-800 border-l-4 ${diff.border}`}
+      style={{ backgroundColor: '#ffffff', 
+        borderRadius: hs(20),
+        marginBottom: vs(12),
+        marginTop: vs(4),
+        padding: hs(14),
+        borderWidth: 1,
+        borderColor: '#e5e7eb',
+        borderLeftWidth: hs(4),
+        borderLeftColor: diff.borderColor,
+        // Shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.07,
+        shadowRadius: 6,
+        elevation: 3,
+      }}
     >
-
-      <View className="flex-row items-stretch">
+      <View style={{ flexDirection: 'row', alignItems: 'stretch' }}>
         {/* Left column */}
-        <View className="flex-1 mr-3">
+        <View style={{ flex: 1, marginRight: hs(10) }}>
           {/* Exercise Name */}
-          <Text className="text-base font-extrabold text-gray-900 mb-2.5" numberOfLines={2}>
+          <Text style={{ fontSize: rf(15), fontWeight: '800',color: '#111827',marginBottom: vs(8),}} numberOfLines={2}>
             {item.name}
           </Text>
 
-          {/* Type & Equipment */}
-          <View className="flex-row flex-wrap gap-1 items-center">
+          {/* Badges row */}
+          <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: hs(5),alignItems: 'center',}}>
             {/* Type */}
-            <View className="bg-indigo-50 px-2.5 py-1 rounded-lg">
-              <Text className="text-xs font-semibold text-indigo-700 capitalize">
+            <View style={{backgroundColor: '#eef2ff',paddingHorizontal: hs(8),paddingVertical: vs(3),borderRadius: hs(8),}}>
+              <Text style={{fontSize: rf(11),fontWeight: '600',color: '#4338ca',textTransform: 'capitalize',}}>
                 {item.type ? item.type.replace(/_/g, ' ') : 'Exercise'}
               </Text>
             </View>
@@ -49,15 +67,21 @@ const WorkoutCard = ({ item, navigation }) => {
             {/* Equipment */}
             {item.equipments && item.equipments.length > 0 && (
               <>
-                <Text className="text-xs font-semibold text-gray-500">
+                <Text style={{fontSize: rf(11),fontWeight: '600',color: '#9ca3af',}}>
                   Needs:
                 </Text>
                 {item.equipments.slice(0, 2).map((eq, i) => (
-                  <View
-                    key={i}
-                    className="bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-200"
+                  <View key={i}
+                    style={{
+                      backgroundColor: '#fff7ed',
+                      paddingHorizontal: hs(7),
+                      paddingVertical: vs(2),
+                      borderRadius: hs(8),
+                      borderWidth: 1,
+                      borderColor: '#fed7aa',
+                    }}
                   >
-                    <Text className="text-[10px] font-semibold text-orange-700">
+                    <Text style={{fontSize: rf(10),fontWeight: '600',color: '#c2410c',}}>
                       {eq}
                     </Text>
                   </View>
@@ -68,16 +92,16 @@ const WorkoutCard = ({ item, navigation }) => {
         </View>
 
         {/* Right column */}
-        <View className="items-end justify-between">
-          {/* Difficulty */}
-          <View className={`px-2.5 py-0.5 rounded-full border ${diff.badge}`}>
-            <Text className={`text-xs font-bold capitalize ${diff.text}`}>
+        <View style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
+          {/* Difficulty badge */}
+          <View style={{paddingHorizontal: hs(8),paddingVertical: vs(3),borderRadius: hs(20),backgroundColor: diff.badgeBg,borderWidth: 1,borderColor: diff.badgeBorder,}}>
+            <Text style={{fontSize: rf(11),fontWeight: '700',textTransform: 'capitalize',color: diff.textColor,}}>
               {item.difficulty}
             </Text>
           </View>
 
-          {/* Right Arrow */}
-          <ChevronRight size={18} color="#9ca3af" />
+          {/* Arrow */}
+          <ChevronRight size={hs(18)} color="#9ca3af" />
         </View>
       </View>
     </TouchableOpacity>

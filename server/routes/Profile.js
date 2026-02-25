@@ -19,6 +19,7 @@ router.put("/profile", authMiddleware, async (req, res) => {
   try {
     const { name, email, height, weight, age, gender } = req.body;
     const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
     user.name = name;
     user.email = email;
     user.height = height;

@@ -1,9 +1,10 @@
-import { View, Text,TextInput,Pressable,TouchableOpacity,ActivityIndicator,ScrollView,StatusBar,} from 'react-native';
+import { View, Text,TextInput,Pressable,TouchableOpacity,ActivityIndicator,ScrollView,StatusBar,KeyboardAvoidingView,Platform,} from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Users,Eye,EyeOff,Dumbbell,Mail,Lock,User,Ruler,Weight,Calendar,} from 'lucide-react-native';
 import { useAuth } from '../context/AuthContext';
 import GenderModal from '../components/GenderModal';
+import { rf, hs, vs, wp, isTablet } from '../utils/responsive';
 
 const RegisterScreen = ({ navigation }) => {
   const { register } = useAuth();
@@ -26,15 +27,7 @@ const RegisterScreen = ({ navigation }) => {
     if (!email.includes('@')) return setError('Enter a valid email');
     try {
       setLoading(true);
-      await register(
-        name,
-        email,
-        password,
-        Number(height),
-        Number(weight),
-        Number(age),
-        gender,
-      );
+      await register( name, email,password,Number(height),Number(weight),Number(age),gender,);
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {
@@ -42,187 +35,206 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
+  const logoSize = isTablet ? vs(96) : vs(64);
+  const iconSize = isTablet ? hs(40) : hs(32);
+  const cardPad = isTablet ? hs(32) : hs(20);
+  const hPad = wp(isTablet ? 20 : 6);
+
+  const inputRow = (icon, placeholder, value, onChange, opts = {}) => (
+    <View style={{ flexDirection: 'row',alignItems: 'center',borderRadius: hs(16),paddingHorizontal: hs(14),paddingVertical: vs(11),backgroundColor: '#f9fafb',borderWidth: 2,borderColor: '#e5e7eb',}}>
+      {icon}
+      <TextInput style={{flex: 1,color: '#111827',marginLeft: hs(10),fontSize: rf(14),}} placeholder={placeholder}
+        placeholderTextColor="#9ca3af"
+        value={value}
+        onChangeText={onChange}
+        {...opts}
+      />
+    </View>
+  );
+
+  const sectionLabel = text => (
+    <Text style = {{fontSize: rf(10),textTransform: 'uppercase',letterSpacing: 1.5,color: '#6366f1',fontWeight: '700',marginBottom: vs(12),}}>
+      {text}
+    </Text>
+  );
+
+  const fieldLabel = text => (
+    <Text style = {{color: '#6b7280',fontSize: rf(10),marginBottom: vs(5),marginLeft: hs(4),textTransform: 'uppercase',letterSpacing: 1.2,}}>
+      {text}
+    </Text>
+  );
+
   return (
-    <SafeAreaView className="flex-1 bg-app-dark">
-      <StatusBar barStyle="light-content" backgroundColor="#0a0a0f" />
-      <View className="h-1 bg-indigo-500" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#f9fafb' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#f9fafb" />
+      <View style={{ height: vs(4), backgroundColor: '#6366f1' }} />
 
-      <ScrollView contentContainerStyle={{
-          paddingHorizontal: 24,
-          paddingTop: 24,
-          paddingBottom: 40,
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Brand Header */}
-        <View className="items-center mb-8">
-          <View className="w-16 h-16 rounded-3xl bg-indigo-500 items-center justify-center mb-3">
-            <Dumbbell size={32} color="#ffffff" />
-          </View>
-          <Text className="text-3xl font-bold text-white">Create Account</Text>
-          <Text className="text-gray-500 text-sm mt-1">
-            Fill in your details to get started
-          </Text>
-        </View>
-
-        {/* Glass Card */}
-        <View className="rounded-3xl p-6 bg-white/5 border border-white/10">
-          {/* Account Info Section */}
-          <Text className="text-xs uppercase tracking-widest mb-4 text-indigo-400 font-bold">
-            Account Info
-          </Text>
-
-          {/* Name */}
-          <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-            Name
-          </Text>
-          <View className="flex-row items-center rounded-2xl px-4 py-3 mb-4 bg-white/[7%] border border-white/10">
-            <User size={18} color="#6366f1" />
-            <TextInput className="flex-1 text-white ml-3" placeholder="Full name"
-              placeholderTextColor="#4b5563" value={name}
-              onChangeText={setName}
-            />
+      <KeyboardAvoidingView style = {{ flex: 1 }} behavior = {Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: hPad,
+            paddingTop: vs(20),
+            paddingBottom: vs(48),
+          }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <View style={{ alignItems: 'center', marginBottom: vs(24) }}>
+            <View style={{width: logoSize,height: logoSize,borderRadius: hs(20),backgroundColor: '#6366f1',alignItems: 'center',justifyContent: 'center',marginBottom: vs(10),}}>
+              <Dumbbell size={iconSize} color="#ffffff" />
+            </View>
+            <Text style={{ fontSize: rf(26), fontWeight: '800', color: '#111827' }}>
+              Create Account
+            </Text>
+            <Text style={{ color: '#9ca3af', fontSize: rf(13), marginTop: vs(4) }}>
+              Fill in your details to get started
+            </Text>
           </View>
 
-          {/* Email */}
-          <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-            Email
-          </Text>
-          <View className="flex-row items-center rounded-2xl px-4 py-3 mb-4 bg-white/[7%] border border-white/10">
-            <Mail size={18} color="#6366f1" />
-            <TextInput className="flex-1 text-white ml-3" placeholder="Email address"
-              placeholderTextColor="#4b5563" value={email}
-              onChangeText={setEmail}keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
+          {/* Form Card */}
+          <View style={{ borderRadius: hs(24),padding: cardPad,backgroundColor: '#ffffff',borderWidth: 1,borderColor: '#f3f4f6',}}>
+            {sectionLabel('Account Info')}
 
-          {/* Password */}
-          <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-            Password
-          </Text>
-          <View className="flex-row items-center rounded-2xl px-4 py-3 mb-6 bg-white/[7%] border border-white/10">
-            <Lock size={18} color="#6366f1" />
-            <TextInput className="flex-1 text-white ml-3" placeholder="Create a password"
-              placeholderTextColor="#4b5563" value={password}
-              onChangeText={setPassword} secureTextEntry={!showPassword}
-            />
-            <Pressable onPress={() => setShowPassword(!showPassword)}>
-              {showPassword ? (
-                <EyeOff size={18} color="#6b7280" />
+            {fieldLabel('Name')}
+            <View style={{ marginBottom: vs(12) }}>
+              {inputRow(
+                <User size={hs(18)} color="#6366f1" />,
+                'Full name',
+                name,
+                setName,
+              )}
+            </View>
+
+            {fieldLabel('Email')}
+            <View style={{ marginBottom: vs(12) }}>
+              {inputRow(
+                <Mail size={hs(18)} color="#6366f1" />,
+                'Email address',
+                email,
+                setEmail,
+                { keyboardType: 'email-address', autoCapitalize: 'none' },
+              )}
+            </View>
+
+            {fieldLabel('Password')}
+            <View style={{ flexDirection: 'row',alignItems: 'center',borderRadius: hs(16),paddingHorizontal: hs(14),paddingVertical: vs(11),marginBottom: vs(20),backgroundColor: '#f9fafb',borderWidth: 2,borderColor: '#e5e7eb',}}>
+              <Lock size={hs(18)} color="#6366f1" />
+              <TextInput style={{flex: 1,color: '#111827',marginLeft: hs(10),fontSize: rf(14),}}
+                placeholder="Create a password"
+                placeholderTextColor="#9ca3af"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <Pressable onPress={() => setShowPassword(!showPassword)}hitSlop={8}>
+                {showPassword ? (
+                  <EyeOff size={hs(18)} color="#9ca3af" />
+                ) : (
+                  <Eye size={hs(18)} color="#9ca3af" />
+                )}
+              </Pressable>
+            </View>
+
+            {/* ── Physical Stats ── */}
+            {sectionLabel('Physical Stats')}
+
+            {/* Height + Weight row */}
+            <View style={{flexDirection: 'row',gap: hs(10),marginBottom: vs(12),}}>
+              <View style={{ flex: 1 }}>
+                {fieldLabel('Height (cm)')}
+                <View style={{flexDirection: 'row',alignItems: 'center',borderRadius: hs(16),paddingHorizontal: hs(12),paddingVertical: vs(11),backgroundColor: '#f9fafb',borderWidth: 2,borderColor: '#e5e7eb',}}>
+                  <Ruler size={hs(16)} color="#6366f1" />
+                  <TextInput style={{flex: 1,color: '#111827',marginLeft: hs(8),fontSize: rf(14),}}
+                    placeholder="175"
+                    placeholderTextColor="#9ca3af"
+                    value={height}
+                    onChangeText={setHeight}
+                    keyboardType="numeric"
+                  />
+                </View>
+              </View>
+
+              <View style={{ flex: 1 }}>
+                {fieldLabel('Weight (kg)')}
+                <View style={{ flexDirection: 'row',alignItems: 'center',borderRadius: hs(16),paddingHorizontal: hs(12),paddingVertical: vs(11),backgroundColor: '#f9fafb',borderWidth: 2,borderColor: '#e5e7eb',}}>
+                  <Weight size={hs(16)} color="#6366f1" />
+                  <TextInput style={{flex: 1,color: '#111827',marginLeft: hs(8),fontSize: rf(14),}}
+                    placeholder="70"
+                    placeholderTextColor="#9ca3af"
+                    value={weight}
+                    onChangeText={setWeight}
+                    keyboardType="numeric"
+                  />
+                </View>
+              </View>
+            </View>
+
+            {/* Age + Gender row */}
+            <View style={{ flexDirection: 'row',gap: hs(10),marginBottom: vs(20),}}>
+              <View style={{ flex: 1 }}>
+                {fieldLabel('Age')}
+                <View style={{ flexDirection: 'row', alignItems: 'center',borderRadius: hs(16),paddingHorizontal: hs(12),paddingVertical: vs(11),backgroundColor: '#f9fafb',borderWidth: 2,borderColor: '#e5e7eb',}}>
+                  <Calendar size={hs(16)} color="#6366f1" />
+                  <TextInput style={{flex: 1,color: '#111827',marginLeft: hs(8),fontSize: rf(14),}}
+                    placeholder="22"
+                    placeholderTextColor="#9ca3af"
+                    value={age}
+                    onChangeText={setAge}
+                    keyboardType="numeric"
+                  />
+                </View>
+              </View>
+
+              <View style={{ flex: 1 }}>
+                {fieldLabel('Gender')}
+                <TouchableOpacity style={{ flexDirection: 'row',alignItems: 'center',borderRadius: hs(16),paddingHorizontal: hs(12),paddingVertical: vs(11),backgroundColor: '#f9fafb',borderWidth: 2,borderColor: '#e5e7eb',}}
+                  onPress={() => setShowGenderModal(true)}
+                >
+                  <Users size={hs(16)} color="#6366f1" />
+                  <Text style={{flex: 1,marginLeft: hs(8),fontSize: rf(14),color: gender ? '#111827' : '#9ca3af',}}>
+                    {gender || 'Select'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Error */}
+            {error ? (
+              <Text style={{color: '#ef4444',fontSize: rf(13),marginBottom: vs(12),marginLeft: hs(4),}}>
+                {error}
+              </Text>
+            ) : null}
+
+            {/* Register Button */}
+            <Pressable onPress={handleRegister}disabled={loading}
+              style={{ borderRadius: hs(16),paddingVertical: vs(14),alignItems: 'center',backgroundColor: loading ? '#818cf8' : '#6366f1',}}>
+              {loading ? (
+                <ActivityIndicator color="#fff" />
               ) : (
-                <Eye size={18} color="#6b7280" />
+                <Text style={{color: '#ffffff',fontWeight: '700',fontSize: rf(15),letterSpacing: 0.5,}}>
+                  Create Account
+                </Text>
               )}
             </Pressable>
           </View>
 
-          {/* Stats  */}
-          <Text className="text-xs uppercase tracking-widest mb-4 text-indigo-400 font-bold">
-            Physical Stats
-          </Text>
-
-          <View className = "flex-row gap-3 mb-4">
-            {/* Height */}
-            <View className="flex-1">
-              <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-                Height (cm)
+          {/* Login Link */}
+          <View style={{ flexDirection: 'row', justifyContent: 'center',marginTop: vs(20),}}>
+            <Text style={{ color: '#6b7280', fontSize: rf(14) }}>
+              Already have an account?{' '}
+            </Text>
+            <Pressable onPress={() => navigation.replace('Login')} hitSlop={8}>
+              <Text style={{ color: '#6366f1',fontWeight: '700',fontSize: rf(14),}}>
+                Sign In
               </Text>
-              <View className="flex-row items-center rounded-2xl px-4 py-3 bg-white/[7%] border border-white/10">
-                <Ruler size={18} color="#6366f1" />
-                <TextInput className="flex-1 text-white ml-3" placeholder="175"
-                  placeholderTextColor="#4b5563" value={height}
-                  onChangeText={setHeight}keyboardType="numeric"
-                />
-              </View>
-            </View>
-
-            {/* Weight */}
-            <View className="flex-1">
-              <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-                Weight (kg)
-              </Text>
-              <View className="flex-row items-center rounded-2xl px-4 py-3 bg-white/[7%] border border-white/10">
-                <Weight size={18} color="#6366f1" />
-                <TextInput className="flex-1 text-white ml-3" placeholder="70"
-                  placeholderTextColor="#4b5563" value={weight}
-                  onChangeText={setWeight}keyboardType="numeric"
-                />
-              </View>
-            </View>
+            </Pressable>
           </View>
-
-
-          <View className = "flex-row gap-3 mb-6">
-            {/* Age */}
-            <View className="flex-1">
-              <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-                Age
-              </Text>
-              <View className="flex-row items-center rounded-2xl px-4 py-3 bg-white/[7%] border border-white/10">
-                <Calendar size={18} color="#6366f1" />
-                <TextInput className="flex-1 text-white ml-3" placeholder="22"
-                  placeholderTextColor="#4b5563" value={age}
-                  onChangeText={setAge}keyboardType="numeric"
-                />
-              </View>
-            </View>
-
-            {/* Gender */}
-            <View className="flex-1">
-              <Text className="text-gray-400 text-xs mb-2 ml-1 uppercase tracking-widest">
-                Gender
-              </Text>
-              <TouchableOpacity
-                className="flex-row items-center rounded-2xl px-4 py-3 bg-white/[7%] border border-white/10"
-                onPress={() => setShowGenderModal(true)}
-              >
-                <Users size={18} color="#6366f1" />
-                <Text
-                  className={`flex-1 ml-3 ${
-                    gender ? 'text-white' : 'text-gray-600'
-                  }`}
-                >
-                  {gender || 'Select'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {error ? (
-            <Text className="text-red-400 text-sm mb-4 ml-1">{error}</Text>
-          ) : null}
-
-          {/* Register Button */}
-          <Pressable onPress={handleRegister} disabled={loading}
-            className={`rounded-2xl py-4 items-center ${
-              loading ? 'bg-indigo-700' : 'bg-indigo-500'
-            }`}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text className="text-white font-bold text-base tracking-wide">
-                Create Account
-              </Text>
-            )}
-          </Pressable>
-        </View>
-
-        {/* Login Link */}
-        <View className="flex-row justify-center mt-6">
-          <Text className="text-gray-500">Already have an account? </Text>
-          <Pressable onPress={() => navigation.replace('Login')}>
-            <Text className="text-indigo-400 font-bold">Sign In</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* Gender Modal */}
-      <GenderModal
-        showGenderModal={showGenderModal}
-        setShowGenderModal={setShowGenderModal}
-        formData={{ gender }}
-        setFormData={({ gender: g }) => setGender(g)}
+      <GenderModal showGenderModal={showGenderModal} setShowGenderModal={setShowGenderModal}formData={{ gender }} setFormData={({ gender: g }) => setGender(g)}
       />
     </SafeAreaView>
   );

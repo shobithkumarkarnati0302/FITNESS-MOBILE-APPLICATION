@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import WorkoutStack from './WorkoutStack';
 import ProfileStack from './ProfileStack';
-import { User, Home, History } from 'lucide-react-native';
+import { User, Home} from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
@@ -14,12 +14,12 @@ export default function AppNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarLabelStyle: {
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: 'bold',
         },
         tabBarStyle: {
           height: 65 + insets.bottom,
-          paddingBottom: insets.bottom + 10,
+          paddingBottom: insets.bottom,
         },
       }}
     >
@@ -28,7 +28,7 @@ export default function AppNavigator() {
         component={WorkoutStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => <Home color={color} size={32} />,
+          tabBarIcon: ({ color, size }) => <Home color={color} size={24} />,
         }}
       />
       <Tab.Screen
@@ -36,7 +36,7 @@ export default function AppNavigator() {
         component = {ProfileStack}
         options   = {{
           tabBarLabel: 'Profile',
-          tabBarIcon : ({ color, size }) => <User color={color} size={32} />,
+          tabBarIcon : ({ color, size }) => <User color={color} size={24} />,
         }}
       />
       {/* <Tab.Screen
