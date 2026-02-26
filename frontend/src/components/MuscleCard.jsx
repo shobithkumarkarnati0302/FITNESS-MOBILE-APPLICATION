@@ -10,7 +10,7 @@ const MuscleCard = ({ item, navigation, numCols = 2 }) => {
   const cardWidth = (wp(100) - totalHPad - gap) / numCols;
 
   return (
-    <View style={{ width: cardWidth,marginBottom: vs(10),marginHorizontal: hs(3),}}>
+    <View style={{ width: cardWidth,marginBottom: vs(10),marginHorizontal: hs(3)}}>
       <TouchableOpacity style={{ borderRadius: hs(20), overflow: 'hidden', aspectRatio: 4 / 5 }} activeOpacity={0.85}
         onPress={() => navigation.navigate('WorkoutList', { muscleGroup: item.name })}
       >

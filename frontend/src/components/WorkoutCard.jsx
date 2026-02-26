@@ -28,9 +28,11 @@ const WorkoutCard = ({ item, navigation }) => {
   const diff = diffClass[item.difficulty] || diffClass.beginner;
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('WorkoutDetail', { exercise: item })}
+    <TouchableOpacity
+      onPress={() => navigation.navigate('WorkoutDetail', { exercise: item })}
       activeOpacity={0.85}
-      style={{ backgroundColor: '#ffffff', 
+      style={{
+        backgroundColor: '#ffffff',
         borderRadius: hs(20),
         marginBottom: vs(12),
         marginTop: vs(4),
@@ -39,7 +41,6 @@ const WorkoutCard = ({ item, navigation }) => {
         borderColor: '#e5e7eb',
         borderLeftWidth: hs(4),
         borderLeftColor: diff.borderColor,
-        // Shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.07,
@@ -51,51 +52,75 @@ const WorkoutCard = ({ item, navigation }) => {
         {/* Left column */}
         <View style={{ flex: 1, marginRight: hs(10) }}>
           {/* Exercise Name */}
-          <Text style={{ fontSize: rf(15), fontWeight: '800',color: '#111827',marginBottom: vs(8),}} numberOfLines={2}>
+          <Text
+            style={{
+              fontSize: rf(15),
+              fontWeight: '800',
+              color: '#111827',
+              marginBottom: vs(8),
+            }}
+            numberOfLines={2}
+          >
             {item.name}
           </Text>
 
           {/* Badges row */}
-          <View style={{flexDirection: 'row',flexWrap: 'wrap',gap: hs(5),alignItems: 'center',}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap     : 'wrap',
+              gap          : hs(5),
+              alignItems   : 'center',
+            }}
+          >
             {/* Type */}
-            <View style={{backgroundColor: '#eef2ff',paddingHorizontal: hs(8),paddingVertical: vs(3),borderRadius: hs(8),}}>
-              <Text style={{fontSize: rf(11),fontWeight: '600',color: '#4338ca',textTransform: 'capitalize',}}>
+            <View style={{ backgroundColor: '#eef2ff', paddingHorizontal: hs(8), paddingVertical: vs(3),borderRadius: hs(8),}}>
+              <Text style={{ fontSize: rf(11),fontWeight: '600',color: '#4338ca', textTransform: 'capitalize',}}>
                 {item.type ? item.type.replace(/_/g, ' ') : 'Exercise'}
               </Text>
             </View>
 
-            {/* Equipment */}
-            {item.equipments && item.equipments.length > 0 && (
-              <>
-                <Text style={{fontSize: rf(11),fontWeight: '600',color: '#9ca3af',}}>
-                  Needs:
-                </Text>
-                {item.equipments.slice(0, 2).map((eq, i) => (
-                  <View key={i}
+              {/* Equipment */}
+              {item.equipments && item.equipments.length > 0 && (
+                <>
+                  <Text
                     style={{
-                      backgroundColor: '#fff7ed',
-                      paddingHorizontal: hs(7),
-                      paddingVertical: vs(2),
-                      borderRadius: hs(8),
-                      borderWidth: 1,
-                      borderColor: '#fed7aa',
+                      fontSize: rf(11),
+                      fontWeight: '600',
+                      color: '#9ca3af',
                     }}
                   >
-                    <Text style={{fontSize: rf(10),fontWeight: '600',color: '#c2410c',}}>
-                      {eq}
-                    </Text>
-                  </View>
-                ))}
-              </>
-            )}
+                    Equipments :{' '}
+                  </Text>
+                  {item.equipments.slice(0, 10).map((eq, i) => (
+                    <View key={i}
+                      style={{
+                        backgroundColor: '#fff7ed',
+                        paddingHorizontal: hs(7),
+                        paddingVertical: vs(2),
+                        borderRadius: hs(8),
+                        borderWidth: 1,
+                        borderColor: '#fed7aa',
+                      }}
+                    >
+                      <Text style={{fontSize: rf(10),fontWeight: '600',color: '#c2410c',}}>
+                        {eq}
+                      </Text>
+                    </View>
+                  ))}
+                </>
+              )}
           </View>
         </View>
 
         {/* Right column */}
         <View style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
           {/* Difficulty badge */}
-          <View style={{paddingHorizontal: hs(8),paddingVertical: vs(3),borderRadius: hs(20),backgroundColor: diff.badgeBg,borderWidth: 1,borderColor: diff.badgeBorder,}}>
-            <Text style={{fontSize: rf(11),fontWeight: '700',textTransform: 'capitalize',color: diff.textColor,}}>
+          <View style={{ paddingHorizontal: hs(8),paddingVertical: vs(3), borderRadius: hs(20), backgroundColor: diff.badgeBg, borderWidth: 1,
+              borderColor: diff.badgeBorder,
+            }}
+          >
+            <Text style={{ fontSize: rf(11), fontWeight: '700', textTransform: 'capitalize', color: diff.textColor,}}>
               {item.difficulty}
             </Text>
           </View>

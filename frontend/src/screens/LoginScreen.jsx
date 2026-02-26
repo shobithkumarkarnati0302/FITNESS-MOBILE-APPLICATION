@@ -6,11 +6,11 @@ import { Eye, EyeOff, Dumbbell, Mail, Lock } from 'lucide-react-native';
 import { rf, hs, vs, wp, isTablet } from '../utils/responsive';
 
 const LoginScreen = ({ navigation }) => {
-  const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { login }                       = useAuth();
+  const [email, setEmail]               = useState('');
+  const [password, setPassword]         = useState('');
+  const [error, setError]               = useState('');
+  const [loading, setLoading]           = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {

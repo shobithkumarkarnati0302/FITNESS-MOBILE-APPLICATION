@@ -29,15 +29,7 @@ export function AuthProvider({ children }) {
     setToken(res.data.token);
   };
 
-  const register = async (
-    name,
-    email,
-    password,
-    height,
-    weight,
-    age,
-    gender,
-  ) => {
+  const register = async ( name,email,password,height,weight,age,gender) => {
     const res = await api.post('/auth/register', {
       name,
       email,

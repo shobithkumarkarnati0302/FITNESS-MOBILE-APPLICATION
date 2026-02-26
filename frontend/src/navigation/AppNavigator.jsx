@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import WorkoutStack from './WorkoutStack';
 import ProfileStack from './ProfileStack';
-import { User, Home} from 'lucide-react-native';
+import { User, Home, Dumbbell} from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
@@ -32,21 +32,13 @@ export default function AppNavigator() {
         }}
       />
       <Tab.Screen
-        name      = "Profile"
-        component = {ProfileStack}
-        options   = {{
+        name="Profile"
+        component={ProfileStack}
+        options={{
           tabBarLabel: 'Profile',
-          tabBarIcon : ({ color, size }) => <User color={color} size={24} />,
+          tabBarIcon: ({ color, size }) => <User color={color} size={24} />,
         }}
       />
-      {/* <Tab.Screen
-        name      = "History"
-        component = {HistoryScreen}
-        options   = {{
-          tabBarLabel: 'History',
-          tabBarIcon : ({ color, size }) => <History color={color} size={32} />,
-        }}
-      /> */}
     </Tab.Navigator>
   );
 }

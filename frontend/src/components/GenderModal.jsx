@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import { Users, Check } from 'lucide-react-native';
 
 const GENDER_OPTIONS = [
@@ -8,23 +8,92 @@ const GENDER_OPTIONS = [
   { label: 'Other', emoji: '🧑', value: 'other' },
 ];
 
-const GenderModal = ({ showGenderModal, setShowGenderModal,formData,setFormData,}) => {
-  return (
-    <Modal transparent animationType="slide" visible={showGenderModal} onRequestClose={() => setShowGenderModal(false)}>
-      {/* Backdrop */}
-      <Pressable className="flex-1 bg-black/45" onPress={() => setShowGenderModal(false)}/>
+/**
+ * Renders as an absolute-positioned full-screen overlay (no Modal component).
+ * This avoids Android Modal rendering issues entirely.
+ * Place this component outside ScrollView / KeyboardAvoidingView inside the root SafeAreaView.
+ */
+const GenderModal = ({
+  showGenderModal,
+  setShowGenderModal,
+  formData,
+  setFormData,
+}) => {
+  if (!showGenderModal) return null;
 
-      {/* Bottom Sheet */}
-      <View className="bg-white rounded-t-[28px] pt-3 pb-9 px-6">
-        {/* Handle */}
-        <View className="w-10 h-1 bg-gray-200 rounded-full self-center mb-5" />
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 9999,
+        elevation: 9999,
+        justifyContent: 'flex-end',
+      }}
+    >
+      {/* Dark backdrop — tapping it closes the sheet */}
+      <Pressable
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+        }}
+        onPress={() => setShowGenderModal(false)}
+      />
+
+      {/* Bottom sheet */}
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          borderTopLeftRadius: 28,
+          borderTopRightRadius: 28,
+          paddingTop: 12,
+          paddingBottom: 40,
+          paddingHorizontal: 24,
+          zIndex: 10000,
+          elevation: 10000,
+        }}
+      >
+        {/* Handle bar */}
+        <View
+          style={{
+            width: 40,
+            height: 4,
+            backgroundColor: '#e5e7eb',
+            borderRadius: 4,
+            alignSelf: 'center',
+            marginBottom: 20,
+          }}
+        />
 
         {/* Title */}
-        <View className="flex-row items-center mb-5">
-          <View className="bg-indigo-50 w-9 h-9 rounded-xl items-center justify-center mr-3">
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: '#eef2ff',
+              width: 36,
+              height: 36,
+              borderRadius: 12,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 12,
+            }}
+          >
             <Users size={20} color="#6366f1" />
           </View>
-          <Text className="text-gray-900 text-lg font-extrabold">
+          <Text style={{ color: '#111827', fontSize: 18, fontWeight: '800' }}>
             Select Gender
           </Text>
         </View>
@@ -33,27 +102,48 @@ const GenderModal = ({ showGenderModal, setShowGenderModal,formData,setFormData,
         {GENDER_OPTIONS.map(option => {
           const isSelected = formData?.gender === option.value;
           return (
-            <TouchableOpacity key={option.value}
-              onPress={() => { 
+            <TouchableOpacity
+              key={option.value}
+              activeOpacity={0.75}
+              onPress={() => {
                 setFormData({ ...formData, gender: option.value });
                 setShowGenderModal(false);
               }}
-              className={`flex-row items-center rounded-2xl p-4 mb-2.5 border-2
-                ${
-                  isSelected
-                    ? 'bg-indigo-50 border-indigo-500'
-                    : 'bg-gray-50 border-gray-100'
-                }`}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderRadius: 16,
+                padding: 16,
+                marginBottom: 10,
+                borderWidth: 2,
+                backgroundColor: isSelected ? '#eef2ff' : '#f9fafb',
+                borderColor: isSelected ? '#6366f1' : '#e5e7eb',
+              }}
             >
-              <Text className="text-3xl mr-3.5">{option.emoji}</Text>
-              <Text className={`flex-1 text-base font-bold ${
-                  isSelected ? 'text-indigo-800' : 'text-gray-700'
-                }`}
+              <Text style={{ fontSize: 28, marginRight: 14 }}>
+                {option.emoji}
+              </Text>
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: isSelected ? '#3730a3' : '#374151',
+                }}
               >
                 {option.label}
               </Text>
               {isSelected && (
-                <View className="bg-indigo-500 w-6 h-6 rounded-full items-center justify-center">
+                <View
+                  style={{
+                    backgroundColor: '#6366f1',
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <Check size={14} color="#fff" />
                 </View>
               )}
@@ -61,7 +151,7 @@ const GenderModal = ({ showGenderModal, setShowGenderModal,formData,setFormData,
           );
         })}
       </View>
-    </Modal>
+    </View>
   );
 };
 
