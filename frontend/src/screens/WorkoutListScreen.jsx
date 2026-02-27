@@ -1,6 +1,6 @@
-import { View, Text,FlatList,TouchableOpacity,StatusBar,TextInput} from 'react-native';
+import { View,Text,FlatList,TouchableOpacity,StatusBar,TextInput,} from 'react-native';
 import { useEffect, useState, useCallback } from 'react';
-import { SafeAreaView, useSafeAreaInsets,} from 'react-native-safe-area-context';
+import { SafeAreaView,useSafeAreaInsets,} from 'react-native-safe-area-context';
 import getExercisesByMuscle from '../services/exercisesService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import WorkoutCard from '../components/WorkoutCard';
@@ -19,12 +19,12 @@ const WorkoutListScreen = ({ route, navigation }) => {
   const fetchExercises = useCallback(
     async (isRefresh = false) => {
       try {
-        isRefresh ? setRefreshing(true): setLoading(true);
+        isRefresh ? setRefreshing(true) : setLoading(true);
         const res = await getExercisesByMuscle(muscleGroup);
         if (res && Array.isArray(res)) {
           setExercises(res);
           setFilteredData(res);
-        } 
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -42,19 +42,9 @@ const WorkoutListScreen = ({ route, navigation }) => {
       setFilteredData(exercises);
       return;
     }
-    
-    const items = exercises.map(item => item.equipments).flat();
-    const found = items.some(item => item.includes(e.toLowerCase()));
 
-    if (found) {
-      handleFilter(e);
-    } 
-  };
-
-  const handleFilter = (e) => {
-    const res = exercises.filter(item => item.equipments?.includes(e.toLowerCase()),);
+    const res = exercises.filter(item => item.equipments?.some(eq => eq.toLowerCase().includes(e.toLowerCase())));
     setFilteredData(res);
-    console.log('Filtered Data', res);
   };
 
   useEffect(() => {
@@ -166,19 +156,20 @@ const WorkoutListScreen = ({ route, navigation }) => {
             <View className="mb-4">
               <View className="p-4 flex flex-row gap-3">
                 <TextInput
+                  placeholderTextColor="#6b7280"
                   placeholder="Search by equipment"
-                  className="p-2 pl-4 border-[2px] border-[#6366f1] w-[90%] rounded-lg"
+                  className="p-2 pl-4 border-[2px] border-[#6366f1] w-full rounded-lg"
                   value={search}
                   onChangeText={handleSearch}
                 />
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   className="p-2 bg-[#6366f1] rounded-lg items-center justify-center"
                   onPress={handleSearch}
                   disabled={true}
                   // onPress   = {()=>{handleSearch(search)}}
                 >
                   <Search color="#ffffff" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </>

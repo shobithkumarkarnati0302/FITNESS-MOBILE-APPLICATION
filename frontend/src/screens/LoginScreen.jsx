@@ -27,8 +27,8 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const logoSize = isTablet ? vs(120) : vs(80);
-  const iconSize = isTablet ? hs(50) : hs(40);
+  const logoSize = isTablet ? vs(120) : vs(60);
+  const iconSize = isTablet ? hs(50) : hs(30);
   const cardPad = isTablet ? hs(32) : hs(24);
 
   return (

@@ -3,9 +3,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '@env';
 
 const api = axios.create({
-  baseURL: BASE_URL || "http://10.0.2.2:5000",   // Android emulator → host machine's localhost
+  baseURL: BASE_URL || 'http://10.0.2.2:5000',  // Android emulator → host machine's localhost
 });
-``
+
+
 api.interceptors.request.use(async config => {
   const token = await AsyncStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;

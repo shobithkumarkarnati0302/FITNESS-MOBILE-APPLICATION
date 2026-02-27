@@ -35,8 +35,8 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  const logoSize = isTablet ? vs(96) : vs(64);
-  const iconSize = isTablet ? hs(40) : hs(32);
+  const logoSize = isTablet ? vs(96) : vs(60);
+  const iconSize = isTablet ? hs(40) : hs(30);
   const cardPad = isTablet ? hs(32) : hs(20);
   const hPad = wp(isTablet ? 20 : 6);
 

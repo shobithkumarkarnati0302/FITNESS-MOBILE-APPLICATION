@@ -3,6 +3,7 @@ import WorkoutStack from './WorkoutStack';
 import ProfileStack from './ProfileStack';
 import { User, Home, Dumbbell} from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BrowseEquipment from '../screens/BrowseEquipmentScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,6 +30,14 @@ export default function AppNavigator() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => <Home color={color} size={24} />,
+        }}
+      />
+      <Tab.Screen
+        name="Browse Equipments"
+        component={BrowseEquipment}
+        options={{
+          tabBarLabel: 'Equipments',
+          tabBarIcon: ({ color, size }) => <Dumbbell color={color} size={24} />,
         }}
       />
       <Tab.Screen

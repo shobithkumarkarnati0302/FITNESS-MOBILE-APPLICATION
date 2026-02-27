@@ -24,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
   const handleSearch = (e) => {
     // if(e === "")setFilteredData(muscles_groups);
     setSearch(e);
-    const res = muscles_groups.filter(item => item.name.includes(e));
+    const res = muscles_groups.filter(item => item.name.includes(e.toLowerCase()));
     setFilteredData(res);
   };
 
@@ -60,13 +60,17 @@ const HomeScreen = ({ navigation }) => {
         ListHeaderComponent={
           <>
             {/* Header */}
-            <View style={{backgroundColor: '#6366f1',paddingHorizontal: hs(24),paddingTop: vs(16),paddingBottom: vs(20),}}>
+            <View
+              // className = 'rounded-lg bg-[#6366f1] p-4 w-[95%] mx-4'
+              style = {{backgroundColor: '#6366f1',paddingHorizontal: hs(24),paddingTop: vs(16),paddingBottom: vs(20),height: vs(100)}}
+            >
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection : 'row',
+                  alignItems    : 'center',
                   justifyContent: 'space-between',
-                  marginBottom: vs(4),
+                  marginBottom  : vs(4),
+                  paddingTop    : vs(12),
                 }}
               >
                 <View>
@@ -109,19 +113,20 @@ const HomeScreen = ({ navigation }) => {
             {/* Search Bar */}
             <View className="p-4 flex flex-row gap-3 mb-5">
               <TextInput
+                placeholderTextColor = "#6b7280"
                 placeholder = "Search by any Muscle Category"
-                className = "p-2 pl-4 border-[2px] border-[#6366f1] w-[90%] rounded-lg"
+                className = "p-2 pl-4 border-[2px] border-[#6366f1] w-full rounded-lg"
                 value = {search}
                 onChangeText = {handleSearch}
               />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 className = "p-2 bg-[#6366f1] rounded-lg items-center justify-center"
                 onPress   = {handleSearch}
                 disabled  = {true}
                 // onPress   = {()=>{handleSearch(search)}}
               >
                 <Search color="#ffffff" />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             {/* <View className="p-4">

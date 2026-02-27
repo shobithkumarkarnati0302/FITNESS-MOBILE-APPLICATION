@@ -94,6 +94,7 @@ router.post("/login", async (req, res) => {
         weight: existingUser.weight,
         age: existingUser.age,
         gender: existingUser.gender,
+        subscriptionStartDate: existingUser.subscriptionStartDate,
       },
     });
   } catch (error) {
