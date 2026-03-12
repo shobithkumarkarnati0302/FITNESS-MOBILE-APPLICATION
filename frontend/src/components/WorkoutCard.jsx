@@ -35,19 +35,19 @@ const WorkoutCard = ({ item, navigation }) => {
       activeOpacity={0.85}
       style={{
         backgroundColor: '#ffffff',
-        borderRadius: hs(20),
-        marginBottom: vs(12),
-        marginTop: vs(4),
-        padding: hs(14),
-        borderWidth: 1,
-        borderColor: '#e5e7eb',
+        borderRadius   : hs(20),
+        marginBottom   : vs(12),
+        marginTop      : vs(4),
+        padding        : hs(14),
+        borderWidth    : 1,
+        borderColor    : '#e5e7eb',
         borderLeftWidth: hs(4),
         borderLeftColor: diff.borderColor,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.07,
-        shadowRadius: 6,
-        elevation: 3,
+        shadowColor    : '#000',
+        shadowOffset   : { width: 0, height: 2 },
+        shadowOpacity  : 0.07,
+        shadowRadius   : 6,
+        elevation      : 3,
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'stretch' }}>
