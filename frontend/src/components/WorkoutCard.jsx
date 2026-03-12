@@ -1,7 +1,8 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { ChevronRight } from 'lucide-react-native';
+import { ChevronRight, Star } from 'lucide-react-native';
 import { rf, hs, vs } from '../utils/responsive';
+import { useFavourites } from '../context/FavoriteContext';
 
 const diffClass = {
   beginner: {
@@ -26,10 +27,11 @@ const diffClass = {
 
 const WorkoutCard = ({ item, navigation }) => {
   const diff = diffClass[item.difficulty] || diffClass.beginner;
+  const { isFavourite, toggleFavourite } = useFavourites();
+  const fav = isFavourite(item.name);
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('WorkoutDetail', { exercise: item })}
       activeOpacity={0.85}
       style={{
         backgroundColor: '#ffffff',
@@ -68,65 +70,111 @@ const WorkoutCard = ({ item, navigation }) => {
           <View
             style={{
               flexDirection: 'row',
-              flexWrap     : 'wrap',
-              gap          : hs(5),
-              alignItems   : 'center',
+              flexWrap: 'wrap',
+              gap: hs(5),
+              alignItems: 'center',
             }}
           >
             {/* Type */}
-            <View style={{ backgroundColor: '#eef2ff', paddingHorizontal: hs(8), paddingVertical: vs(3),borderRadius: hs(8),}}>
-              <Text style={{ fontSize: rf(11),fontWeight: '600',color: '#4338ca', textTransform: 'capitalize',}}>
+            <View
+              style={{
+                backgroundColor: '#eef2ff',
+                paddingHorizontal: hs(8),
+                paddingVertical: vs(3),
+                borderRadius: hs(8),
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: rf(11),
+                  fontWeight: '600',
+                  color: '#4338ca',
+                  textTransform: 'capitalize',
+                }}
+              >
                 {item.type ? item.type.replace(/_/g, ' ') : 'Exercise'}
               </Text>
             </View>
 
-              {/* Equipment */}
-              {item.equipments && item.equipments.length > 0 && (
-                <>
-                  <Text
+            {/* Equipment */}
+            {item.equipments && item.equipments.length > 0 && (
+              <>
+                <Text
+                  style={{
+                    fontSize: rf(11),
+                    fontWeight: '600',
+                    color: '#9ca3af',
+                  }}
+                >
+                  Equipments :{' '}
+                </Text>
+                {item.equipments.slice(0, 10).map((eq, i) => (
+                  <View
+                    key={i}
                     style={{
-                      fontSize: rf(11),
-                      fontWeight: '600',
-                      color: '#9ca3af',
+                      backgroundColor: '#fff7ed',
+                      paddingHorizontal: hs(7),
+                      paddingVertical: vs(2),
+                      borderRadius: hs(8),
+                      borderWidth: 1,
+                      borderColor: '#fed7aa',
                     }}
                   >
-                    Equipments :{' '}
-                  </Text>
-                  {item.equipments.slice(0, 10).map((eq, i) => (
-                    <View key={i}
+                    <Text
                       style={{
-                        backgroundColor: '#fff7ed',
-                        paddingHorizontal: hs(7),
-                        paddingVertical: vs(2),
-                        borderRadius: hs(8),
-                        borderWidth: 1,
-                        borderColor: '#fed7aa',
+                        fontSize: rf(10),
+                        fontWeight: '600',
+                        color: '#c2410c',
                       }}
                     >
-                      <Text style={{fontSize: rf(10),fontWeight: '600',color: '#c2410c',}}>
-                        {eq}
-                      </Text>
-                    </View>
-                  ))}
-                </>
-              )}
+                      {eq}
+                    </Text>
+                  </View>
+                ))}
+              </>
+            )}
           </View>
         </View>
 
         {/* Right column */}
-        <View style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <View
+          style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}
+        >
           {/* Difficulty badge */}
-          <View style={{ paddingHorizontal: hs(8),paddingVertical: vs(3), borderRadius: hs(20), backgroundColor: diff.badgeBg, borderWidth: 1,
+          <View
+            style={{
+              paddingHorizontal: hs(8),
+              paddingVertical: vs(3),
+              borderRadius: hs(20),
+              backgroundColor: diff.badgeBg,
+              borderWidth: 1,
               borderColor: diff.badgeBorder,
             }}
           >
-            <Text style={{ fontSize: rf(11), fontWeight: '700', textTransform: 'capitalize', color: diff.textColor,}}>
+            <Text
+              style={{
+                fontSize: rf(11),
+                fontWeight: '700',
+                textTransform: 'capitalize',
+                color: diff.textColor,
+              }}
+            >
               {item.difficulty}
             </Text>
           </View>
 
-          {/* Arrow */}
-          <ChevronRight size={hs(18)} color="#9ca3af" />
+          <View style={{ flexDirection: 'row',alignItems: 'center',gap: hs(10),marginTop: vs(10),}}>
+            {/* Favourite star button */}
+            {/* <TouchableOpacity onPress={() => toggleFavourite(item)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Star size={hs(20)} color={fav ? '#FFD700' : '#9ca3af'} fill={fav ? '#FFD700' : 'none'} />
+            </TouchableOpacity> */}
+
+            {/* Detail button */}
+            <TouchableOpacity onPress={() => navigation.navigate('WorkoutDetail', { exercise: item })}
+              style={{ backgroundColor: '#facd56',padding: hs(2),borderRadius: hs(10),}}>
+              <ChevronRight size={hs(18)} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </TouchableOpacity>

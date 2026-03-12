@@ -32,14 +32,14 @@ export default function AppNavigator() {
           tabBarIcon: ({ color, size }) => <Home color={color} size={24} />,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Browse Equipments"
         component={BrowseEquipment}
         options={{
           tabBarLabel: 'Equipments',
           tabBarIcon: ({ color, size }) => <Dumbbell color={color} size={24} />,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={ProfileStack}

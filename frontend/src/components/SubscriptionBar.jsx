@@ -4,17 +4,21 @@ import { Zap } from 'lucide-react-native';
 import { useAuth } from '../context/AuthContext';
 
 const SubscriptionBar = () => {
-  const { user } = useAuth();
+  const { user }   = useAuth();
   const TOTAL_DAYS = 30;
+  
+  if(!user){
+    return null;
+  }
 
-  const Start_Date = new Date(user.subscriptionStartDate);
+  const Start_Date = new Date(user.subscriptionStartDate || Date.now());
   const today = new Date();
 
   const diff = today - Start_Date;
-  console.log(diff)
   const USED_DAYS = Math.floor(diff / (1000 * 60 * 60 * 24));
   const PROGRESS = Math.round((USED_DAYS / TOTAL_DAYS) * 100);
   const REMAINING = TOTAL_DAYS - USED_DAYS;
+  
 
   return (
     <View className="bg-violet-50 rounded-[18px] p-4 border border-violet-100">

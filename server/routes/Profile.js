@@ -33,4 +33,35 @@ router.put("/profile", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/favourites",authMiddleware,async(req,res)=>{
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.status(200).json(user.favourites);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
+router.post("/favourites",authMiddleware,async(req,res)=>{
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    user.favourites.push(req.body.id);
+    await user.save();
+    res.status(200).json(user.favourites);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
+router.delete("/favourites",authMiddleware,async(req,res)=>{
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    user.favourites.pull(req.body.id);
+    await user.save();
+    res.status(200).json(user.favourites);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
 export default router;
